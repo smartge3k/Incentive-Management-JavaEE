@@ -1,0 +1,34 @@
+INSERT INTO incentiveentity (id,dtype,name)
+VALUES (10,'TrialPackageEntity','$5 Free');
+
+INSERT INTO incentiveentity (id,dtype,name)
+VALUES (11,'PromotionalGiftEntity','6 Free Bottles');
+
+INSERT INTO incentiveentity (id,dtype,name)
+VALUES (12,'TrialPackageEntity','Free Subscription');
+
+INSERT INTO incentiveentity (id,dtype,name)
+VALUES (13,'PromotionalGiftEntity','50% off next order');
+
+INSERT INTO incentiveentity (id,dtype,name)
+VALUES (14,'TrialPackageEntity','6 months free delivery');
+
+
+INSERT INTO beverageentity
+VALUES (9,'Water Bottles','Nestle',2000.3,300,10);
+
+INSERT INTO beverageentity
+VALUES (10,'Cola','Coca Cola',150,50,11);
+
+INSERT INTO beverageentity
+VALUES (11,'Beer','Becks Brewery',500,25);
+
+INSERT INTO beverageentity
+VALUES (12,'Pepsi Cola','Pepsi',844,54,13);
+
+INSERT INTO beverageentity
+VALUES (13,'Sheza','Pepsi',54,12);
+
+
+
+

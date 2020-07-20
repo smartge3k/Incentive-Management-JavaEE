@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<application xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/application_6.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="6">
+  <application-name>BeverageStore</application-name>
+  <module>
+    <web>
+      <web-uri>frontend.war</web-uri>
+      <context-root>frontend</context-root>
+    </web>
+  </module>
+  <module>
+    <ejb>backend.jar</ejb>
+  </module>
+  <library-directory>lib</library-directory>
+</application>

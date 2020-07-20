@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+
+	<display-name>BeverageStoreUI</display-name>
+
+	
+		<!-- Servlets -->
+	
+	<servlet>
+		<servlet-name>BeverageServlet</servlet-name>
+		<servlet-class>de.uniba.dsg.dsam.client.BeverageServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>BeverageServlet</servlet-name>
+		<url-pattern>/beverages</url-pattern>
+	</servlet-mapping>
+	
+		<!-- Servlets -->
+		<servlet>
+		<description>
+		</description>
+		<display-name>IncentiveServlet</display-name>
+		<servlet-name>IncentiveServlet</servlet-name>
+		<servlet-class>de.uniba.dsg.dsam.client.IncentiveServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>IncentiveServlet</servlet-name>
+		<url-pattern>/incentiveservlet</url-pattern>
+	</servlet-mapping>
+	
+		<!-- Servlets -->
+		
+		
+	<servlet>
+        <servlet-name>EditBeverageServlet</servlet-name>
+		<servlet-class>de.uniba.dsg.dsam.client.EditBeverageServlet</servlet-class>
+	</servlet>	
+	<servlet-mapping>
+		<servlet-name>EditBeverageServlet</servlet-name>
+		<url-pattern>/beverages/editbeverage</url-pattern>
+	</servlet-mapping>	
+	
+		<!-- Servlets -->
+		
+	<servlet>
+
+		<display-name>editincentiveservlet</display-name>
+		<servlet-name>editincentiveservlet</servlet-name>
+		<servlet-class>de.uniba.dsg.dsam.client.editincentiveservlet</servlet-class>
+	</servlet>
+		<servlet-mapping>
+		<servlet-name>editincentiveservlet</servlet-name>
+		<url-pattern>/incentiveservlet/editincentiveservlet</url-pattern>
+	</servlet-mapping>
+	
+		<!-- Servlets -->
+		<servlet>
+		<display-name>orderservlet</display-name>
+		<servlet-name>orderservlet</servlet-name>
+		<servlet-class>de.uniba.dsg.dsam.client.orderservlet</servlet-class>
+	</servlet>
+	
+			<servlet-mapping>
+		<servlet-name>orderservlet</servlet-name>
+		<url-pattern>/orderservlet</url-pattern>
+	</servlet-mapping>
+	
+	
+		<!-- Servlets -->
+		
+		
+	
+	<!-- JSPs -->
+	
+	<servlet>
+		<servlet-name>New</servlet-name>
+		<jsp-file>addbeverage.jsp</jsp-file>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>New</servlet-name>
+		<url-pattern>/beverages/new</url-pattern>
+	</servlet-mapping>
+	
+		<!-- JSPs -->
+	
+	<servlet>
+		<servlet-name>NewIncentive</servlet-name>
+		<jsp-file>addincentive.jsp</jsp-file>
+	</servlet>
+
+	
+	<servlet-mapping>
+		<servlet-name>NewIncentive</servlet-name>
+		<url-pattern>/incentiveserlvet/newincentive</url-pattern>
+	</servlet-mapping>
+
+       <!-- JSPs -->
+
+      <servlet>
+		<servlet-name>NewOrder</servlet-name>
+		<jsp-file>addorder.jsp</jsp-file>
+	</servlet>
+
+	
+	<servlet-mapping>
+		<servlet-name>NewOrder</servlet-name>
+		<url-pattern>/orderservlet/neworder</url-pattern>
+	</servlet-mapping>
+	
+	
+
+</web-app>

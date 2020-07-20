@@ -1,0 +1,264 @@
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+project(':ear') {
+    apply plugin: 'ear'
+
+    dependencies {
+        // The following dependencies will be the ear modules and
+        // will be placed in the ear root
+        deploy project(path: ':frontend', configuration: 'archives')
+        deploy project(':backend')
+
+        // All libraries used by the modules must be included as EAR libraries
+        earlib project(':shared')
+        earlib group: 'org.jfree', name: 'jfreechart', version: '1.0.14', ext: 'jar'
+        earlib group: 'org.jfree', name: 'jcommon', version: '1.0.17',ext:'jar'
+    }
+
+    ear {
+        archiveName "${rootProject.name}.ear"
+
+        deploymentDescriptor {
+            applicationName = "${rootProject.name}"
+        }
+    }
+}
+
+
+project(':shared') {
+    apply plugin: 'java'
+}
+
+
+project(':frontend') {
+    apply plugin: 'war'
+
+    dependencies {
+        // not added to the archive must be inside the EAR classpath
+        providedCompile project(':shared')
+        providedCompile group: 'javax', name: 'javaee-api', version: '8.0'
+        compile group: 'org.jfree', name: 'jfreechart', version: '1.0.14'
+        compile group: 'org.jfree', name: 'jcommon', version: '1.0.17'
+    }
+}
+
+project(':backend') {
+    apply plugin: 'java'
+
+    dependencies {
+        // not added to the archive must be inside the EAR classpath
+        compile project(':shared')
+        compile group: 'javax', name: 'javaee-api', version: '8.0'
+    }
+}
+
+
+
+apply plugin: 'java'
+
+task startGlassfish(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "start-domain"]
+            
+		}
+		String url = "http://" +javaeeServerName + ":" + javaeeServerPort
+        println "${url} is up!"
+	} 
+}
+
+task stopGlassfish(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "stop-domain"]
+		}
+	} 
+}
+
+task restartGlassfish(dependsOn: ['stopGlassfish', 'startGlassfish']) {
+	group = 'GlassFish'
+	doLast {
+	} 
+}
+startGlassfish.mustRunAfter stopGlassfish
+
+
+task deploy(dependsOn:jar) {
+	group = 'GlassFish'
+	description = 'Deploys your ear to GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "deploy", "--force=true", 
+            "ear/build/libs/" + appName + ".ear"]           
+		}
+	} 
+}
+
+task undeploy(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "undeploy", appName] 
+		}
+	} 
+}
+
+task redeploy(dependsOn: ['deploy', 'undeploy']) {
+	group = 'GlassFish'
+	doLast {
+	} 
+}
+deploy.mustRunAfter undeploy
+
+
+task createJMSResourceQueue(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "create-jms-resource", "--restype", 
+            "javax.jms.Queue", "--enabled=true", "--property", 
+            "Name=PhysicalQueue", appJmsQueue] 
+		}
+	} 
+}
+
+task deleteJMSResourceQueue(dependsOn:jar){
+	group = 'GlassFish'
+	doLast {
+		javaexec {
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "delete-jms-resource", 
+            appJmsQueue] 
+		}
+	}
+}
+
+task createJMSResourceFactory(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "create-jms-resource", "--restype", 
+            "javax.jms.QueueConnectionFactory", "--enabled=true", "--property", 
+            "transaction-support=XATransaction", appJmsFactory] 
+		}
+	} 
+}
+
+task deleteJMSResourceFactory(dependsOn:jar){
+	group = 'GlassFish'
+	doLast {
+		javaexec {
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "delete-jms-resource", 
+            appJmsFactory] 
+		}
+	}
+}
+
+
+
+task createJDBCConnectionPool(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "create-jdbc-connection-pool", 
+            "--datasourceclassname" , dbDatasource, 
+            "--restype", "javax.sql.XADataSource", 
+            "--property", "portNumber=" + dbPort + ":serverName=" + 
+            dbServerName + ":User=" + dbUser + ":Password=" + 
+            dbPassword + ":databaseName=" + dbName, 
+            appJdbcConnectionpool
+            ] 
+		}
+	} 
+}
+
+task deleteJDBCConnectionPool(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "delete-jdbc-connection-pool", 
+            appJdbcConnectionpool
+            ] 
+		}
+	} 
+}
+
+task createJDBCResource(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "create-jdbc-resource", 
+            "--connectionpoolid", appJdbcConnectionpool, 
+            "--enabled=true", appJdbcResource
+            ] 
+		}
+	} 
+}
+
+
+task deleteJDBCResource(dependsOn:jar) {
+	group = 'GlassFish'
+	doLast {
+		javaexec { 
+		main="-jar";
+		args = [
+            javaeeHome + "/modules/admin-cli.jar", "--port",  
+            javaeeAdminserverPort, "delete-jdbc-resource", 
+            appJdbcResource
+            ] 
+		}
+	} 
+}
+
+
+task initServer(dependsOn: ['createJMSResourceQueue',
+'createJMSResourceFactory','createJDBCConnectionPool',
+'createJDBCResource']){
+	group = 'GlassFish'
+	doLast{
+		println 'initializing'
+	}
+}
+createJDBCResource.mustRunAfter createJDBCConnectionPool

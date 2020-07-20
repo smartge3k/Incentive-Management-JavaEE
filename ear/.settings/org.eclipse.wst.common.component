@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+	<wb-module deploy-name="ear">
+		<dependent-module deploy-path="/" handle="module:/resource/frontend/frontend">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/" handle="module:/resource/backend/backend">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/lib" handle="module:/resource/shared/shared">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/lib" handle="module:/classpath/lib/C:/Users/shani/.gradle/caches/modules-2/files-2.1/org.jfree/jfreechart/1.0.14/fa67c798b0ae80b84f3854d69e341abacd3867c5/jfreechart-1.0.14.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+		<dependent-module deploy-path="/lib" handle="module:/classpath/lib/C:/Users/shani/.gradle/caches/modules-2/files-2.1/org.jfree/jcommon/1.0.17/7bcb68fde08258e59fe7bcc758c08af830fb2c1d/jcommon-1.0.17.jar">
+			<dependency-type>uses</dependency-type>
+		</dependent-module>
+	</wb-module>
+</project-modules>
